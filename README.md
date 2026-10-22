@@ -1,59 +1,171 @@
-# ChaiTube — full-stack video platform starter
+# ChaiTube 🎬 — Full-Stack Video Sharing Platform
 
-This bundle includes your original Chai Aur Code backend with deployment fixes, plus a responsive React/Vite frontend.
+ChaiTube is a full-stack video-sharing web application built with React, Vite, Node.js, Express, and MongoDB. It provides a responsive interface for discovering videos, user authentication, video playback, and media uploads.
 
-## What's included
-- Dark, responsive video discovery UI with search, video detail/player, sign-in, registration, and upload screens.
-- API integration for listing/searching videos, fetching a video, login/register, and publishing videos.
-- Backend health check at `GET /api/v1/healthcheck`.
-- Public video list/detail endpoints; authenticated video create/update/delete/publish endpoints.
-- Safer unique temporary upload filenames, production `start` script, CORS origin configuration.
+## 🚀 Live Demo
 
-## Important status
-The supplied backend repository contains unfinished TODO controllers for comments, likes, subscriptions, playlists, tweets, and dashboard statistics. Those features are not fully implemented by this bundle. The UI marks comments as not yet available. Video browse/detail/publish endpoints and health check were implemented here, but deployment still requires your own MongoDB Atlas and Cloudinary credentials.
+- **Live Website:** https://chai-tube-4huzqq62w-aman-aad7.vercel.app/
+- **Backend API Health Check:** https://chaitube-backend.onrender.com/api/v1/healthcheck
+- **GitHub Repository:** https://github.com/yadavak2024/ChaiTube
 
-## 1. Configure MongoDB Atlas
-1. Create a MongoDB Atlas cluster and database user.
-2. Add your deployment provider's outbound IPs to Atlas Network Access (for quick testing, `0.0.0.0/0` works but is less restrictive).
-3. Copy the Atlas connection string into `backend/.env` as `MONGODB_URI`. Keep the URI in the format `mongodb+srv://user:password@cluster.mongodb.net` — the app appends `/videotube`.
+## ✨ Features
 
-## 2. Configure Cloudinary
-Create a Cloudinary account and copy Cloud Name, API Key, and API Secret into `backend/.env`. Registration requires an avatar image; video publishing requires a video and thumbnail. Do not commit `.env` or publish credentials.
+- Responsive, dark-themed user interface
+- Video discovery and search interface
+- Video details and playback
+- User registration and login
+- Video upload and publishing interface
+- Frontend and backend REST API integration
+- MongoDB database integration
+- Cloudinary media storage integration
+- Environment-based configuration
+- Deployed frontend and backend
 
-## 3. Run locally
-Terminal 1:
+**Note:** Some planned backend modules may still require implementation. Check the corresponding controllers before assuming that comments, likes, subscriptions, playlists, and dashboard statistics are all fully supported.
+
+## 🛠️ Tech Stack
+
+### Frontend
+- React.js
+- Vite
+- JavaScript
+- lucide-react
+
+### Backend
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- JSON Web Tokens (JWT)
+- Cloudinary
+- Multer
+- bcrypt
+
+### Deployment and Services
+- Vercel — Frontend hosting
+- Render — Backend hosting
+- MongoDB Atlas — Database
+- Cloudinary — Media storage
+
+## 📂 Project Structure
+
+```text
+ChaiTube/
+├── backend/
+│   ├── src/
+│   │   ├── controllers/
+│   │   ├── db/
+│   │   ├── middlewares/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   ├── utils/
+│   │   ├── app.js
+│   │   └── index.js
+│   └── package.json
+├── frontend/
+│   ├── src/
+│   ├── .env.example
+│   ├── package.json
+│   └── vite.config.js
+└── README.md
+```
+
+## 💻 Getting Started
+
+### Prerequisites
+
+- Node.js and npm
+- MongoDB database
+- Cloudinary account for media uploads
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/yadavak2024/ChaiTube.git
+cd ChaiTube
+```
+
+### 2. Configure and run the backend
+
 ```bash
 cd backend
-cp .env.sample .env
-# Edit .env with your credentials
 npm install
 npm run dev
 ```
-Terminal 2:
+
+Create a `backend/.env` file containing your own database connection, Cloudinary credentials, authentication secrets, and other required settings.
+
+For local development, the backend can use port `8000`. The MongoDB connection code appends the database name `videotube` to `MONGODB_URI`, so configure the base connection URI accordingly.
+
+### 3. Configure and run the frontend
+
+Open another terminal from the repository root:
+
 ```bash
 cd frontend
 npm install
-cp .env.example .env
+```
+
+Create `frontend/.env`:
+
+```env
+VITE_API_URL=http://localhost:8000
+```
+
+Start the frontend:
+
+```bash
 npm run dev
 ```
-Frontend defaults to `http://localhost:8000` for the API and runs at `http://localhost:5173`.
 
-## 4. Deploy backend to Render
-1. Push this folder to a GitHub repository.
-2. In Render, create **New + → Web Service**, connect the repository, and set **Root Directory** to `backend`.
-3. Build command: `npm install`
-4. Start command: `npm start`
-5. Add environment variables from `backend/.env.sample`: `MONGODB_URI`, `CORS_ORIGIN`, both token secrets/expiries, and all three Cloudinary values. `PORT` is usually supplied by Render; don't hard-code it there.
-6. After deploy, test `https://YOUR-BACKEND.onrender.com/api/v1/healthcheck`.
+The Vite development server normally runs at `http://localhost:5173`.
 
-## 5. Deploy frontend to Vercel
-1. Import the same GitHub repository in Vercel.
-2. Set **Root Directory** to `frontend`.
-3. Framework preset: Vite. Build command `npm run build`; output directory `dist`.
-4. Add environment variable `VITE_API_URL=https://YOUR-BACKEND.onrender.com`.
-5. Deploy, then copy the Vercel URL and update backend `CORS_ORIGIN` to that URL (and `http://localhost:5173` if needed). Redeploy/restart the backend after changing env vars.
+## ☁️ Deployment
 
-## Notes
-- Set `CORS_ORIGIN` to the exact frontend origin(s), comma-separated, no trailing slash. Avoid `*` with credentialed CORS.
-- Access tokens are sent as Bearer tokens by this frontend. Use HTTPS for production.
-- Demo cards are shown when the API is unreachable or no videos are present, so the design can be previewed before deployment. They are sample content, not database records.
+### Backend — Render
+
+1. Connect the GitHub repository to Render.
+2. Set the Root Directory to `backend`.
+3. Build Command: `npm install`
+4. Start Command: `npm start`
+5. Configure the required backend environment variables in Render.
+6. Configure `CORS_ORIGIN` for the trusted frontend origin.
+7. Deploy and verify the health-check endpoint.
+
+### Frontend — Vercel
+
+1. Import the GitHub repository into Vercel.
+2. Set Root Directory to `frontend`.
+3. Select the Vite framework preset.
+4. Install Command: `npm install`
+5. Build Command: `npm run build`
+6. Output Directory: `dist`
+7. Add the environment variable:
+
+```env
+VITE_API_URL=https://chaitube-backend.onrender.com
+```
+
+8. Deploy the project and test the live website.
+
+## 🔐 Security
+
+- Never commit `.env` files or private credentials.
+- Keep MongoDB credentials, JWT secrets, and Cloudinary API secrets private.
+- Remember that `VITE_` environment variables are exposed to the frontend browser bundle.
+- Restrict CORS to trusted frontend origins.
+- Use HTTPS for deployed applications.
+
+## 🧪 Testing
+
+The project owner reports testing the deployed website, including video display, authentication, playback, upload, and page refresh.
+
+## 👨‍💻 Author
+
+**Aman Yadav**
+
+GitHub: https://github.com/yadavak2024
+
+---
+
+If you encounter a bug or have a suggestion, open an issue in this repository.
